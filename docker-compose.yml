@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  mockserver:
+    image: mockserver/mockserver
+    container_name: mockserver
+    ports:
+      - "1080:1080" # Exposing MockServer on port 1080
+    environment:
+      MOCKSERVER_LOG_LEVEL: INFO
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/mockserver-config.json
+    volumes:
+      - ./mockserver:/config # Mount configuration files if needed
