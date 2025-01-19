@@ -1,8 +1,9 @@
-package io.backendscience.java_benchmark.platformthread;
+package io.backendscience.javabenchmark.platformthread;
 
 import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,14 +20,22 @@ public class PlatformThreadController {
     @GetMapping("platform-thread")
     public String getPlatformThread() {
 
+        StopWatch stopWatch = new StopWatch();
+
+        stopWatch.start();
+
         ResponseEntity<String> result = restClient.get()
             .uri("delayed")
             .retrieve()
             .toEntity(String.class);
 
-        System.out.println("Response status: " + result.getStatusCode());
-        System.out.println("Response headers: " + result.getHeaders());
-        System.out.println("Contents: " + result.getBody());
+        stopWatch.stop();
+
+        logger.info(String.format("Finish Platform Threads %s ms", stopWatch.getTotalTimeMillis()));
+//
+//        System.out.println("Response status: " + result.getStatusCode());
+//        System.out.println("Response headers: " + result.getHeaders());
+//        System.out.println("Contents: " + result.getBody());
 
         return result.getBody();
     }

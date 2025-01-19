@@ -1,4 +1,4 @@
-package io.backendscience.java_benchmark;
+package io.backendscience.javabenchmark;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
