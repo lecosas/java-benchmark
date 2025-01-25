@@ -35,7 +35,7 @@ public class PlatformThreadSimulation extends Simulation {
 
     private static HttpProtocolBuilder setupProtocol() {
         return HttpDsl.http.baseUrl("http://localhost:8080/java-benchmark")
-            .acceptHeader("application/json").maxConnectionsPerHost(10)
+            .acceptHeader("application/json")//.maxConnectionsPerHost(10)
             .userAgentHeader("Performance Test");
     }
 

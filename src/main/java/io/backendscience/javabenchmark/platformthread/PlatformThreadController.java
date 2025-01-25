@@ -1,5 +1,10 @@
 package io.backendscience.javabenchmark.platformthread;
 
+import io.backendscience.javabenchmark.model.Todo;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +21,34 @@ public class PlatformThreadController {
 
     private final RestClient restClient;
     private final Logger logger = Logger.getLogger(PlatformThreadController.class.getName());
+//    private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 
     @GetMapping("platform-thread")
-    public String getPlatformThread() {
+    public ResponseEntity<Todo> getPlatformThread() throws ExecutionException, InterruptedException {
 
         StopWatch stopWatch = new StopWatch();
 
         stopWatch.start();
 
-        ResponseEntity<String> result = restClient.get()
-            .uri("delayed")
+//        executorService.submit(new Runnable() {
+//            @Override
+//            public void run() {
+//                ResponseEntity<String> result = restClient.get()
+//                    .uri("/todos/1")
+//                    .retrieve()
+//                    .toEntity(String.class);
+//            }
+//        }).get();
+
+//        ResponseEntity<String> result = restClient.get()
+//            .uri("delayed")
+//            .retrieve()
+//            .toEntity(String.class);
+
+        ResponseEntity<Todo> result = restClient.get()
+            .uri("/todos/1")
             .retrieve()
-            .toEntity(String.class);
+            .toEntity(Todo.class);
 
         stopWatch.stop();
 
@@ -37,7 +58,8 @@ public class PlatformThreadController {
 //        System.out.println("Response headers: " + result.getHeaders());
 //        System.out.println("Contents: " + result.getBody());
 
-        return result.getBody();
+        return result;
+//        return "OK";
     }
 
 }
