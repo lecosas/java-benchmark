@@ -58,7 +58,7 @@ public class PlatformThreadController {
 //        System.out.println("Response headers: " + result.getHeaders());
 //        System.out.println("Contents: " + result.getBody());
 
-        return result;
+        return ResponseEntity.ok(result.getBody());
 //        return "OK";
     }
 

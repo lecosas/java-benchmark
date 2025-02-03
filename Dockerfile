@@ -1,5 +1,5 @@
 # Use a minimal Java 21 JRE image
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:21-jre-alpine
 
 # Set working directory
 WORKDIR /app
