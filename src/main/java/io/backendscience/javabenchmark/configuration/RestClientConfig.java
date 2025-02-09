@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
 @Configuration
-public class RestClientConfiguration {
+public class RestClientConfig {
 
     @Value("${base.path.url}")
     private String basePathUrl;

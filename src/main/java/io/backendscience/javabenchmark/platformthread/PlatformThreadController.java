@@ -40,11 +40,6 @@ public class PlatformThreadController {
 //            }
 //        }).get();
 
-//        ResponseEntity<String> result = restClient.get()
-//            .uri("delayed")
-//            .retrieve()
-//            .toEntity(String.class);
-
         ResponseEntity<Todo> result = restClient.get()
             .uri("/todos/1")
             .retrieve()
@@ -54,11 +49,7 @@ public class PlatformThreadController {
 
         logger.info(String.format("Finish Platform Threads %s ms", stopWatch.getTotalTimeMillis()));
 //
-//        System.out.println("Response status: " + result.getStatusCode());
-//        System.out.println("Response headers: " + result.getHeaders());
-//        System.out.println("Contents: " + result.getBody());
-
-        return ResponseEntity.ok(result.getBody());
+        return ResponseEntity.ok().build();
 //        return "OK";
     }
 

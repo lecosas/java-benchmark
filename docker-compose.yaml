@@ -13,8 +13,8 @@ services:
           cpus: "1.5"
           memory: "2GB"
         reservations:
-          cpus: "1"
-          memory: "1GB"
+          cpus: "0.7"
+          memory: "0.6GB"
   nginx:
     image: nginx:latest
     volumes:
@@ -28,7 +28,7 @@ services:
       resources:
         limits:
           cpus: '0.1'
-          memory: '0.4GB'
+          memory: '0.2GB'
 networks:
   default:
     driver: bridge
