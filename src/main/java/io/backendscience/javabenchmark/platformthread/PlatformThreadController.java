@@ -25,10 +25,10 @@ public class PlatformThreadController {
 
     @GetMapping("platform-thread")
     public ResponseEntity<Todo> getPlatformThread() throws ExecutionException, InterruptedException {
-
         StopWatch stopWatch = new StopWatch();
-
         stopWatch.start();
+
+        logger.info("Start Platform Threads.");
 
 //        executorService.submit(new Runnable() {
 //            @Override
@@ -48,9 +48,8 @@ public class PlatformThreadController {
         stopWatch.stop();
 
         logger.info(String.format("Finish Platform Threads %s ms", stopWatch.getTotalTimeMillis()));
-//
-        return ResponseEntity.ok().build();
-//        return "OK";
+
+        return ResponseEntity.ok(result.getBody());
     }
 
 }

@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  app:
+    image: cpu-benchmark:0.1
+    container_name: cpu-benchmark
+    ports:
+      - "8080:8080"
+#    environment:
+#      - JAVA_OPTS=-Xms512m -Xmx1024m
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "2GB"
+        reservations:
+          cpus: "1"
+          memory: "2GB"
+networks:
+  default:
+    driver: bridge
+    name: cpu_benchmark

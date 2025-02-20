@@ -18,10 +18,10 @@ public class PlatformThreadSimulation extends Simulation {
     public PlatformThreadSimulation() {
         setUp(buildPostScenario()
             .injectOpen(
-                rampUsersPerSec(0).to(10).during(Duration.ofSeconds(20)), //Ramp-up
-                rampUsersPerSec(10).to(200).during(Duration.ofSeconds(60)),
-                constantUsersPerSec(200).during(Duration.ofSeconds(60)),
-                rampUsersPerSec((200)).to(0).during(Duration.ofSeconds(60)))
+                rampUsersPerSec(0).to(50).during(Duration.ofSeconds(30)), //Ramp-up
+                rampUsersPerSec(50).to(250).during(Duration.ofSeconds(45)),
+                constantUsersPerSec(250).during(Duration.ofSeconds(45)),
+                rampUsersPerSec((250)).to(0).during(Duration.ofSeconds(45)))
             .protocols(setupProtocol()))
             .assertions(
                 global().responseTime().max().lte(10000),
@@ -35,8 +35,9 @@ public class PlatformThreadSimulation extends Simulation {
     }
 
     private static HttpProtocolBuilder setupProtocol() {
-        return HttpDsl.http.baseUrl("http://localhost:8080/java-benchmark")
+        return HttpDsl.http.baseUrl("http://localhost:9999/java-benchmark")
         //return HttpDsl.http.baseUrl("http://192.168.0.246:8080/java-benchmark")
+        //return HttpDsl.http.baseUrl("http://54.162.12.56:9999/java-benchmark")
             .acceptHeader("application/json")//.maxConnectionsPerHost(10)
             .userAgentHeader("Performance Test");
     }
