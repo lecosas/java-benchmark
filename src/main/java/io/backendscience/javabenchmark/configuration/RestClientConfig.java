@@ -52,11 +52,11 @@ public class RestClientConfig {
     }
 
     private HttpComponentsClientHttpRequestFactory clientHttpRequestFactory() {
-        logger.info("connectionTimeout: " + connectionTimeout);
-        logger.info("readTimeout: " + readTimeout);
-        logger.info("socketTimeout: " + socketTimeout);
-        logger.info("maxTotalConnections: " + maxTotalConnections);
-        logger.info("maxPerRouteConnections: " + maxPerRouteConnections);
+        logger.info("RestClient: connectionTimeout: " + connectionTimeout);
+        logger.info("RestClient: readTimeout: " + readTimeout);
+        logger.info("RestClient: socketTimeout: " + socketTimeout);
+        logger.info("RestClient: maxTotalConnections: " + maxTotalConnections);
+        logger.info("RestClient: maxPerRouteConnections: " + maxPerRouteConnections);
 
         PoolingHttpClientConnectionManager poolingConnManager = new PoolingHttpClientConnectionManager();
         poolingConnManager.setMaxTotal(maxTotalConnections);

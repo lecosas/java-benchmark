@@ -4,9 +4,12 @@ import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import java.time.Duration;
+import java.util.logging.Logger;
+import org.apache.hc.core5.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
@@ -18,26 +21,58 @@ public class WebClientConfig {
     @Value("${base.path.url}")
     private String basePathUrl;
 
+    @Value("${httpclient.connection-timeout:5000}")
+    private int connectionTimeout;
+
+    @Value("${httpclient.read-timeout:10000}")
+    private int readTimeout;
+
+    @Value("${httpclient.socket-timeout:10000}")
+    private int socketTimeout;
+
+    @Value("${httpclient.max-total-connections:400}")
+    private int maxTotalConnections;
+
+    @Value("${httpclient.max-per-route-connections:400}")
+    private int maxPerRouteConnections;
+
+    private final Logger logger = Logger.getLogger(WebClientConfig.class.getName());
+
     @Bean
     public WebClient webClient() {
-        ConnectionProvider provider = ConnectionProvider.builder("custom")
-            .maxConnections(400)  // ✅ Limit max concurrent connections
-            .pendingAcquireTimeout(Duration.ofSeconds(5))  // ✅ Wait up to 5s for a free connection
-            .maxIdleTime(Duration.ofSeconds(10))  // ✅ Reuse connections for up to 10s
-            .maxLifeTime(Duration.ofMinutes(5))  // ✅ Avoid stale connections
-            .evictInBackground(Duration.ofSeconds(30))  // ✅ Clean idle connections
+        logger.info("WebClient: connectionTimeout: " + connectionTimeout);
+        logger.info("WebClient: readTimeout: " + readTimeout);
+        logger.info("WebClient: socketTimeout: " + socketTimeout);
+        logger.info("WebClient: maxTotalConnections: " + maxTotalConnections);
+        logger.info("WebClient: maxPerRouteConnections: " + maxPerRouteConnections);
+
+        ConnectionProvider provider = ConnectionProvider.builder("ybs-pool")
+            .maxConnections(maxTotalConnections)
+            .pendingAcquireTimeout(Duration.ofMillis(0))
+            .pendingAcquireMaxCount(-1)
+            .maxIdleTime(Duration.ofMillis(8000L))
+            .maxLifeTime(Duration.ofMillis(8000L))
             .build();
 
+//        ConnectionProvider provider = ConnectionProvider.builder("custom")
+//            .maxConnections(maxTotalConnections)  // Match maxTotalConnections
+//            .pendingAcquireTimeout(Duration.ofMillis(connectionTimeout))  // Match connectionTimeout
+//            .maxIdleTime(Duration.ofSeconds(30))  // Adjusted for better reuse
+//            .maxLifeTime(Duration.ofMinutes(5))  // Similar to traditional pools
+//            .evictInBackground(Duration.ofSeconds(30))  // Clean idle connections periodically
+//            .build();
+
         HttpClient httpClient = HttpClient.create(provider)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)  // Connection timeout
-            .responseTimeout(Duration.ofSeconds(10))  // Timeout for response
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionTimeout)  // Match connectionTimeout
+            .responseTimeout(Duration.ofMillis(socketTimeout))  // Match socketTimeout
             .doOnConnected(conn -> conn
-                .addHandlerLast(new ReadTimeoutHandler(10))  // Read timeout
-                .addHandlerLast(new WriteTimeoutHandler(10)));  // Write timeout
+                .addHandlerLast(new ReadTimeoutHandler(readTimeout / 1000))  // Convert ms to s
+                .addHandlerLast(new WriteTimeoutHandler(readTimeout / 1000)));  // Convert ms to s
 
         return WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(httpClient))
             .baseUrl(basePathUrl)
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .build();
     }
 }

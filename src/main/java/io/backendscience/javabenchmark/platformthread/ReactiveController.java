@@ -21,7 +21,12 @@ public class ReactiveController {
     private final Logger logger = Logger.getLogger(ReactiveController.class.getName());
 
     @GetMapping("reactive")
-    public Mono<Todo> getReactive() throws InterruptedException {
+    public Mono<Todo> getReactive() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+        logger.info("Start Controller isVirtualThread: " + Thread.currentThread().isVirtual());
+
         Mono<Todo> todoMono = webClient
             .get()
             .uri("/todos/1")
@@ -32,8 +37,12 @@ public class ReactiveController {
                 return Mono.error(new RuntimeException("Todo not found or unavailable"));
             });
 
-        return Mono.justOrEmpty(null);
-//        return todoMono;
+//        stopWatch.stop();
+
+//        logger.info(String.format("Finish Controller %s ms", stopWatch.getTotalTimeMillis()));
+
+//        return Mono.justOrEmpty(null);
+        return todoMono;
     }
 
 }
