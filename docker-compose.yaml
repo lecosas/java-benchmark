@@ -1,12 +1,17 @@
 version: '3.8'
 services:
   app:
-    image: java-benchmark:0.3
+    image: java-benchmark:0.4
     container_name: java-benchmark
     ports:
       - "8080:8080"
-#    environment:
-#      - JAVA_OPTS=-Xms512m -Xmx1024m
+    environment:
+      - SPRING_PROFILES_ACTIVE=platform
+      - HTTPCLIENT_CONNECTION_TIMEOUT=5000
+      - HTTPCLIENT_READ_TIMEOUT=10000
+      - HTTPCLIENT_SOCKET_TIMEOUT=10000
+      - HTTPCLIENT_MAX_TOTAL_CONNECTIONS=400
+      - HTTPCLIENT_MAX_PER_ROUTE_CONNECTIONS=100
     deploy:
       resources:
         limits:
@@ -29,6 +34,46 @@ services:
         limits:
           cpus: '0.1'
           memory: '0.2GB'
+#  wiremock:
+#    image: wiremock/wiremock:latest
+#    container_name: wiremock
+#    ports:
+#      - "1080:1080"
+#    volumes:
+#      - ./wiremock/mappings:/home/wiremock/mappings  # Mounts mock response JSONs
+#      - ./wiremock/__files:/home/wiremock/__files    # Optional for large response bodies
+#      - ./wiremock/init:/home/wiremock/init    # Optional for large response bodies
+#      - ./wiremock/extensions:/var/wiremock/extensions  # extensions
+#    environment:
+#      - WIREMOCK_OPTIONS=--global-response-templating --no-request-journal --port 1080
+##      - WIREMOCK_OPTIONS=--global-response-templating --port 1080
+##      - WIREMOCK_OPTIONS=--verbose --global-response-templating --port 1080 --extensions com.rasklaad.wiremock.metrics.MetricsEndpointExtension,com.rasklaad.wiremock.metrics.PrometheusMetricsExtension
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: "1"
+#          memory: "1GB"
+#        reservations:
+#          cpus: "1"
+#          memory: "1GB"
+  mockserver:
+    image: mockserver/mockserver
+    container_name: mockserver
+    ports:
+      - "1080:1080" # Exposing MockServer on port 1080
+    environment:
+      MOCKSERVER_LOG_LEVEL: ERROR
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/mockserver-config.json
+    volumes:
+      - ./mockserver:/config # Mount configuration files if needed
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "1GB"
+        reservations:
+          cpus: "1"
+          memory: "1GB"
 networks:
   default:
     driver: bridge

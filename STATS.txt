@@ -1,0 +1,136 @@
+rampUsersPerSec(0).to(50).during(Duration.ofSeconds(30)), //Ramp-up
+                rampUsersPerSec(50).to(250).during(Duration.ofSeconds(45)),
+                constantUsersPerSec(250).during(Duration.ofSeconds(45)),
+                rampUsersPerSec((250)).to(0).during(Duration.ofSeconds(45)))
+
+****************************************************************************************************
+PLATFORM THREADS				
+RESTCLIENT: VERSÃO COM TIMEOUT E SEM CONNECTION POOLING - 
+          cpus: "1"
+          memory: "2GB"
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      24375 (OK=24362  KO=13    )
+> min response time                                      4 (OK=24     KO=4     )
+> max response time                                  58058 (OK=58058  KO=79    )
+> mean response time                                 26953 (OK=26968  KO=17    )
+> std deviation                                      20377 (OK=20373  KO=19    )
+> response time 50th percentile                      25995 (OK=26180  KO=9     )
+> response time 75th percentile                      46188 (OK=46168  KO=14    )
+> response time 95th percentile                      57458 (OK=57458  KO=48    )
+> response time 99th percentile                      57947 (OK=57947  KO=73    )
+> mean requests/sec                                116.071 (OK=116.01 KO=0.062 )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                          3403 ( 14%)
+> 800 ms < t < 1200 ms                                 195 (  1%)
+> t > 1200 ms                                        20764 ( 85%)
+> failed                                                13 (  0%)
+---- Errors --------------------------------------------------------------------
+> j.i.IOException: Premature close                                   13 (100.0%)
+================================================================================
+
+
+VERSÃO SEM TIMEOUT E SEM CONNECTION POOLING
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      24375 (OK=24375  KO=0     )
+> min response time                                     24 (OK=24     KO=-     )
+> max response time                                  52359 (OK=52359  KO=-     )
+> mean response time                                 24629 (OK=24629  KO=-     )
+> std deviation                                      18650 (OK=18650  KO=-     )
+> response time 50th percentile                      23967 (OK=23976  KO=-     )
+> response time 75th percentile                      43002 (OK=43023  KO=-     )
+> response time 95th percentile                      51855 (OK=51855  KO=-     )
+> response time 99th percentile                      52223 (OK=52223  KO=-     )
+> mean requests/sec                                119.485 (OK=119.485 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                          3786 ( 16%)
+> 800 ms < t < 1200 ms                                 197 (  1%)
+> t > 1200 ms                                        20392 ( 84%)
+> failed                                                 0 (  0%)
+
+
+VERSÃO COM TIMEOUT E COM CONNECTION POOLING
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      24375 (OK=24375  KO=0     )
+> min response time                                     23 (OK=23     KO=-     )
+> max response time                                    729 (OK=729    KO=-     )
+> mean response time                                    87 (OK=87     KO=-     )
+> std deviation                                        126 (OK=126    KO=-     )
+> response time 50th percentile                         40 (OK=40     KO=-     )
+> response time 75th percentile                         57 (OK=57     KO=-     )
+> response time 95th percentile                        454 (OK=454    KO=-     )
+> response time 99th percentile                        581 (OK=581    KO=-     )
+> mean requests/sec                                148.628 (OK=148.628 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                         24375 (100%)
+> 800 ms < t < 1200 ms                                   0 (  0%)
+> t > 1200 ms                                            0 (  0%)
+> failed                                                 0 (  0%)
+================================================================================
+
+---- Global Information --------------------------------------------------------
+> request count                                      24375 (OK=24375  KO=0     )
+> min response time                                     22 (OK=22     KO=-     )
+> max response time                                   1367 (OK=1367   KO=-     )
+> mean response time                                   141 (OK=141    KO=-     )
+> std deviation                                        237 (OK=237    KO=-     )
+> response time 50th percentile                         42 (OK=42     KO=-     )
+> response time 75th percentile                         75 (OK=75     KO=-     )
+> response time 95th percentile                        809 (OK=809    KO=-     )
+> response time 99th percentile                        948 (OK=948    KO=-     )
+> mean requests/sec                                148.628 (OK=148.628 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                         23119 ( 95%)
+> 800 ms < t < 1200 ms                                1250 (  5%)
+> t > 1200 ms                                            6 (  0%)
+> failed                                                 0 (  0%)
+================================================================================
+
+
+****************************************************************************************************
+
+****************************************************************************************************
+VIRTUAL THREADS
+
+VERSÃO COM TIMEOUT E COM CONNECTION POOLING
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      24375 (OK=24375  KO=0     )
+> min response time                                     24 (OK=24     KO=-     )
+> max response time                                    467 (OK=467    KO=-     )
+> mean response time                                    54 (OK=54     KO=-     )
+> std deviation                                         30 (OK=30     KO=-     )
+> response time 50th percentile                         42 (OK=42     KO=-     )
+> response time 75th percentile                         56 (OK=56     KO=-     )
+> response time 95th percentile                        117 (OK=117    KO=-     )
+> response time 99th percentile                        176 (OK=176    KO=-     )
+> mean requests/sec                                148.628 (OK=148.628 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                         24375 (100%)
+> 800 ms < t < 1200 ms                                   0 (  0%)
+> t > 1200 ms                                            0 (  0%)
+> failed                                                 0 (  0%)
+================================================================================
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      24375 (OK=24375  KO=0     )
+> min response time                                     22 (OK=22     KO=-     )
+> max response time                                   2625 (OK=2625   KO=-     )
+> mean response time                                   532 (OK=532    KO=-     )
+> std deviation                                        721 (OK=721    KO=-     )
+> response time 50th percentile                         59 (OK=59     KO=-     )
+> response time 75th percentile                       1051 (OK=1051   KO=-     )
+> response time 95th percentile                       2123 (OK=2123   KO=-     )
+> response time 99th percentile                       2277 (OK=2277   KO=-     )
+> mean requests/sec                                148.628 (OK=148.628 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                         17440 ( 72%)
+> 800 ms < t < 1200 ms                                1993 (  8%)
+> t > 1200 ms                                         4942 ( 20%)
+> failed                                                 0 (  0%)
+================================================================================

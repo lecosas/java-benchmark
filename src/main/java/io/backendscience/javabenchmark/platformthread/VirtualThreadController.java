@@ -2,9 +2,6 @@ package io.backendscience.javabenchmark.platformthread;
 
 import io.backendscience.javabenchmark.model.Todo;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +14,16 @@ import org.springframework.web.client.RestClient;
 @RestController
 @RequestMapping("java-benchmark")
 @RequiredArgsConstructor
-public class PlatformThreadController {
+public class VirtualThreadController {
 
     private final RestClient restClient;
-    private final Logger logger = Logger.getLogger(PlatformThreadController.class.getName());
+    private final Logger logger = Logger.getLogger(VirtualThreadController.class.getName());
 //    private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 
-    @GetMapping("platform-thread")
-    public ResponseEntity<Todo> getPlatformThread() throws ExecutionException, InterruptedException {
+    @GetMapping("virtual-thread")
+    public ResponseEntity<Todo> getVirtualThread() throws ExecutionException, InterruptedException {
         StopWatch stopWatch = new StopWatch();
-
+        stopWatch.start();
 
         logger.info("Start Controller isVirtualThread: " + Thread.currentThread().isVirtual());
 
@@ -40,14 +37,14 @@ public class PlatformThreadController {
 //            }
 //        }).get();
 
-        stopWatch.start();
-
         ResponseEntity<Todo> result = restClient.get()
             .uri("/todos/1")
             .retrieve()
             .toEntity(Todo.class);
 
         stopWatch.stop();
+
+
 
         logger.info(String.format("Finish Controller %s ms", stopWatch.getTotalTimeMillis()));
 

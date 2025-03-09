@@ -1,0 +1,9 @@
+previous_count=0
+while true; do
+  current_count=$(curl -X POST -d '{"url": "/todos/1"}' http://localhost:1080/__admin/requests/count | jq '.count')
+  rps=$((current_count - previous_count))
+  echo "Count: $current_count"
+  echo "Requests per second: $rps"
+  previous_count=$current_count
+  sleep 1
+done

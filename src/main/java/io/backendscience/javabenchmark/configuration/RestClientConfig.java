@@ -23,19 +23,19 @@ public class RestClientConfig {
     @Value("${base.path.url}")
     private String basePathUrl;
 
-    @Value("${restclient.connection-timeout:5000}")
+    @Value("${httpclient.connection-timeout:5000}")
     private int connectionTimeout;
 
-    @Value("${restclient.read-timeout:10000}")
+    @Value("${httpclient.read-timeout:10000}")
     private int readTimeout;
 
-    @Value("${restclient.socket-timeout:10000}")
+    @Value("${httpclient.socket-timeout:10000}")
     private int socketTimeout;
 
-    @Value("${restclient.max-total-connections:100}")
+    @Value("${httpclient.max-total-connections:400}")
     private int maxTotalConnections;
 
-    @Value("${restclient.max-per-route-connections:10}")
+    @Value("${httpclient.max-per-route-connections:400}")
     private int maxPerRouteConnections;
 
     private final Logger logger = Logger.getLogger(RestClientConfig.class.getName());
@@ -52,6 +52,12 @@ public class RestClientConfig {
     }
 
     private HttpComponentsClientHttpRequestFactory clientHttpRequestFactory() {
+        logger.info("connectionTimeout: " + connectionTimeout);
+        logger.info("readTimeout: " + readTimeout);
+        logger.info("socketTimeout: " + socketTimeout);
+        logger.info("maxTotalConnections: " + maxTotalConnections);
+        logger.info("maxPerRouteConnections: " + maxPerRouteConnections);
+
         PoolingHttpClientConnectionManager poolingConnManager = new PoolingHttpClientConnectionManager();
         poolingConnManager.setMaxTotal(maxTotalConnections);
         poolingConnManager.setDefaultMaxPerRoute(maxPerRouteConnections);

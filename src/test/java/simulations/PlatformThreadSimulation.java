@@ -29,7 +29,7 @@ public class PlatformThreadSimulation extends Simulation {
     }
 
     private static ScenarioBuilder buildPostScenario() {
-        return CoreDsl.scenario("Load POST Test").
+        return CoreDsl.scenario("Load Test: PlatformThreadSimulation").
             exec(http("java-benchmark").get("/platform-thread")
                 .header("Content-Type", "application/json"));
     }
@@ -39,7 +39,7 @@ public class PlatformThreadSimulation extends Simulation {
         //return HttpDsl.http.baseUrl("http://192.168.0.246:8080/java-benchmark")
         //return HttpDsl.http.baseUrl("http://54.162.12.56:9999/java-benchmark")
             .acceptHeader("application/json")//.maxConnectionsPerHost(10)
-            .userAgentHeader("Performance Test");
+            .userAgentHeader("PlatformThreadSimulation");
     }
 
     private RampRateOpenInjectionStep injection() {

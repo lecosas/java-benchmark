@@ -4,6 +4,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import java.time.Duration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -14,10 +15,13 @@ import reactor.netty.resources.ConnectionProvider;
 @Configuration
 public class WebClientConfig {
 
+    @Value("${base.path.url}")
+    private String basePathUrl;
+
     @Bean
     public WebClient webClient() {
         ConnectionProvider provider = ConnectionProvider.builder("custom")
-            .maxConnections(100)  // ✅ Limit max concurrent connections
+            .maxConnections(400)  // ✅ Limit max concurrent connections
             .pendingAcquireTimeout(Duration.ofSeconds(5))  // ✅ Wait up to 5s for a free connection
             .maxIdleTime(Duration.ofSeconds(10))  // ✅ Reuse connections for up to 10s
             .maxLifeTime(Duration.ofMinutes(5))  // ✅ Avoid stale connections
@@ -33,7 +37,7 @@ public class WebClientConfig {
 
         return WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(httpClient))
-            .baseUrl("https://jsonplaceholder.typicode.com")
+            .baseUrl(basePathUrl)
             .build();
     }
 }
